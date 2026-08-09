@@ -18,8 +18,12 @@ final class DiceViewModel: ObservableObject {
     private let randomProvider: RandomNumberProviding
     private let rollAnimationDuration: TimeInterval = 0.6
     
-    init(randomProvider: RandomNumberProviding = SystemRandomNumberProvider()) {
-        self.randomProvider = randomProvider;
+    init() {
+        self.randomProvider = SystemRandomNumberProvider()
+    }
+
+    init(randomProvider: RandomNumberProviding) {
+        self.randomProvider = randomProvider
     }
     
     
