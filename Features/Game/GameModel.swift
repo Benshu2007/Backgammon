@@ -3,7 +3,7 @@ public struct GameModel {
     var turn:   Bool
     
     init(turn: Bool) {
-        self.board = BoardModel(turn: turn)
+        self.board = BoardModel()
         self.turn = turn
     }
 }

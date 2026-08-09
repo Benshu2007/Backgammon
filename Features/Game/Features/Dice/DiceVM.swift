@@ -19,14 +19,21 @@ final class DiceViewModel: ObservableObject {
     private let randomProvider: RandomNumberProviding
     private let rollAnimationDuration: TimeInterval = 0.6
     
-    init() {
+    var onRollClick: (() -> Void)?
+    
+    init(onRollClick: (() -> Void)? = nil) {
         self.randomProvider = SystemRandomNumberProvider()
+        self.onRollClick = onRollClick
     }
 
-    init(randomProvider: RandomNumberProviding) {
+    init(randomProvider: RandomNumberProviding, onRollClick: (() -> Void)? = nil) {
         self.randomProvider = randomProvider
+        self.onRollClick = onRollClick
     }
     
+    func setOnRollClick(fn: @escaping () -> Void) {
+        self.onRollClick = fn;
+    }
     
     func rollDice() async -> DiceRoll {
         guard !isRolling else { return currentRoll ?? DiceRoll(die1: 1, die2: 1) }

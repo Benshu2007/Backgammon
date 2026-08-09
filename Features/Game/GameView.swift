@@ -15,8 +15,18 @@ struct GameView: View {
             HStack {
                 BoardView(vm: vm.boardVM)
                 VStack {
-                    Text(verbatim: "Turn: \(vm.boardVM.board.turn ? "White" : "Black")")
+                    Text(verbatim: "Turn: \(vm.turn ? "White" : "Black")")
                     DiceView(vm: vm.diceVM)
+                    Button {
+                        vm.onFinishTurn()
+                    } label: {
+                        Image(systemName: "checkmark.square.fill")
+                            .foregroundStyle(.green)
+                            .font(.largeTitle)
+                            .bold()
+                    }
+                    .opacity(vm.canFinishTurn ? 1 : 0)
+                    .disabled(!vm.canFinishTurn)
                 }
             }
         }

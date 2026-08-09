@@ -34,9 +34,8 @@ struct DiceView: View {
                 withAnimation(.easeInOut(duration: 0.6)) {
                     rollSpin += 360
                 }
-
                 Task {
-                    await vm.rollDice()
+                    vm.onRollClick?()
                 }
             } label: {
                 Label("Roll", systemImage: vm.isRolling ? "dice.fill" : "arrow.triangle.2.circlepath")
