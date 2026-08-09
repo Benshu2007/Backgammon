@@ -14,7 +14,10 @@ struct GameView: View {
         ZStack {
             HStack {
                 BoardView(vm: vm.boardVM)
-                DiceView(vm: vm.diceVM)
+                VStack {
+                    Text(verbatim: "Turn: \(vm.boardVM.board.turn ? "White" : "Black")")
+                    DiceView(vm: vm.diceVM)
+                }
             }
         }
     }

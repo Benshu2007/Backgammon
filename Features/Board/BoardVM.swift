@@ -42,6 +42,7 @@ final class BoardViewModel {
             if movePiece(group: group) {
                 is_game_over = true
             }
+            diceVM.enableRoll()    
             return
         } else if (isValidClick(board: board, from: group.index)) {
             removeFutures()

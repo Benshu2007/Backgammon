@@ -10,10 +10,11 @@ internal import Combine
 
 @MainActor
 final class DiceViewModel: ObservableObject {
-    @Published private(set) var die1Value: Int = 0
-    @Published private(set) var die2Value: Int = 0
-    @Published private(set) var currentRoll: DiceRoll?
-    @Published private(set) var isRolling: Bool = false
+    @Published private(set) var die1Value       : Int = 0
+    @Published private(set) var die2Value       : Int = 0
+    @Published private(set) var currentRoll     : DiceRoll?
+    @Published private(set) var isRolling       : Bool = false
+    @Published private(set) var rollEnabled     : Bool = true;
     
     private let randomProvider: RandomNumberProviding
     private let rollAnimationDuration: TimeInterval = 0.6
@@ -46,6 +47,12 @@ final class DiceViewModel: ObservableObject {
         let roll = DiceRoll(die1: finalDie1, die2: finalDie2)
         currentRoll = roll
         isRolling = false
+        
+        rollEnabled = false
         return roll
+    }
+    
+    func enableRoll() -> Void {
+        rollEnabled = true
     }
 }
