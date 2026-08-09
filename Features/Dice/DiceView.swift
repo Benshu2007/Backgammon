@@ -7,13 +7,16 @@ struct DiceView: View {
     var body: some View {
         VStack(spacing: 18) {
             HStack(spacing: 14) {
-                DieFaceView(value: vm.die1Value, isRolling: vm.isRolling)
-                    .rotation3DEffect(.degrees(vm.isRolling ? 22 : 0), axis: (x: 0.7, y: 1, z: 0.2))
-                    .rotationEffect(.degrees(rollSpin))
-
-                DieFaceView(value: vm.die2Value, isRolling: vm.isRolling)
-                    .rotation3DEffect(.degrees(vm.isRolling ? -22 : 0), axis: (x: 1, y: 0.6, z: 0.2))
-                    .rotationEffect(.degrees(-rollSpin))
+                if (vm.die1Value != 0 && vm.die2Value != 0) {
+                    
+                    DieFaceView(value: vm.die1Value, isRolling: vm.isRolling)
+                        .rotation3DEffect(.degrees(vm.isRolling ? 22 : 0), axis: (x: 0.7, y: 1, z: 0.2))
+                        .rotationEffect(.degrees(rollSpin))
+                    
+                    DieFaceView(value: vm.die2Value, isRolling: vm.isRolling)
+                        .rotation3DEffect(.degrees(vm.isRolling ? -22 : 0), axis: (x: 1, y: 0.6, z: 0.2))
+                        .rotationEffect(.degrees(-rollSpin))
+                }
             }
             .scaleEffect(vm.isRolling ? 1.08 : 1)
             .animation(.smooth(duration: 0.18), value: vm.isRolling)
@@ -52,7 +55,7 @@ struct DiceView: View {
                     .shadow(color: .teal.opacity(vm.isRolling ? 0.45 : 0.22), radius: vm.isRolling ? 16 : 8, y: 6)
             }
             .buttonStyle(.plain)
-            .disabled(vm.isRolling)
+            .disabled(vm.isRolling || !(vm.rollEnabled))
             .opacity(vm.isRolling ? 0.72 : 1)
             .scaleEffect(vm.isRolling ? 0.96 : 1)
             .animation(.smooth(duration: 0.2), value: vm.isRolling)
