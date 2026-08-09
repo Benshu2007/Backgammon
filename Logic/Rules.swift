@@ -40,10 +40,10 @@ func isGameOver(board: BoardModel, turn: Bool) -> Bool {
 }
 
 func isEatingMove(board: BoardModel, turn: Bool, to: Int) -> Bool {
-    return !board.pieces[to].pieces.isEmpty && board.pieces[to].pieces[0].color != turn && board.pieces[to].pieces.count == 1;
+    return !(board.pieces[to].pieces.isEmpty) && board.pieces[to].pieces[0].color != turn && board.pieces[to].pieces.count(where: {$0.future == false}) == 1;
 }
 
 func isValidMove(board: BoardModel, turn: Bool, from: Int, to: Int) -> Bool {
-    return to <= 24 && to >= 1 && isValidClick(board: board, turn: turn, from: from) &&
-    (board.pieces[to].pieces.count <= 1 || board.pieces[to].pieces[0].color == turn)
+    return (to <= 24 && to >= 1 && isValidClick(board: board, turn: turn, from: from) &&
+            (board.pieces[to].pieces.count(where: {$0.future == false}) <= 1 || board.pieces[to].pieces[0].color == turn))
 }

@@ -3,7 +3,7 @@ public struct BoardModel {
     var barPieces       : [PieceModel]
     
     init() {
-        self.barPieces = [PieceModel(color: true, future: false, isExtra: false), PieceModel(color: true, future: false, isExtra: false), PieceModel(color: true, future: false, isExtra: false), PieceModel(color: false, future: false, isExtra: false)]
+        self.barPieces = []
         
         self.pieces = (0..<25).map { PieceGroupModel(index: $0, pieces: []) }
         

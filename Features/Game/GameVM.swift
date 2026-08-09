@@ -29,10 +29,14 @@ final class GameViewModel {
                 is_game_over = true
             }
             if (!availableMoves.isEmpty) {
-                availableMoves.removeLast()
-                if !availableMoves.isEmpty {
-                    let i = availableMoves.firstIndex(where: {$0 == abs(group.index - from_index)})
-                    availableMoves.remove(at: i!)
+                if (abs(group.index - from_index) == availableMoves.last) {
+                    availableMoves = []
+                } else {
+                    availableMoves.removeLast()
+                    if !availableMoves.isEmpty {
+                        let i = availableMoves.firstIndex(where: {$0 == abs(group.index - from_index)})
+                        availableMoves.remove(at: i!)
+                    }
                 }
             }
             if (availableMoves.isEmpty) {
@@ -62,9 +66,8 @@ final class GameViewModel {
         if (isValidMove(board: boardVM.board, turn: turn, from: from, to: to)) {
             if (isEatingMove(board: boardVM.board, turn: turn, to: to)) {
                 boardVM.board.barPieces.append(boardVM.board.pieces[to].pieces[0]);
-                boardVM.board.pieces[to].pieces.removeAll();
+                boardVM.board.pieces[to].pieces.removeAll(where: {$0.future == false});
             }
-            
             let future_piece_index = boardVM.board.pieces[to].pieces.firstIndex(where: {$0.future == true});
             
             boardVM.board.pieces[to].pieces[future_piece_index!].future = false;
