@@ -27,7 +27,7 @@ struct BackgammonApp: App {
 
     var body: some Scene {
         WindowGroup {
-            GameView()
+            ContentView()
         }
         .modelContainer(sharedModelContainer)
     }

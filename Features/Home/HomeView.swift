@@ -9,17 +9,14 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        VStack(spacing: 20) {
-            Text("Backgammon")
-                .font(.largeTitle)
-                .bold()
-            
-            Button {
-                
-            } label: {
-                Text("Play")
-                    .font(.title2)
-                    .padding()
+        NavigationView {
+            VStack(spacing: 20) {
+                Text("Backgammon")
+                    .font(.largeTitle)
+                    .bold()
+                    NavigationLink("Play", destination: GameView())
+                        .font(.title2)
+                        .padding()
             }
         }
     }
