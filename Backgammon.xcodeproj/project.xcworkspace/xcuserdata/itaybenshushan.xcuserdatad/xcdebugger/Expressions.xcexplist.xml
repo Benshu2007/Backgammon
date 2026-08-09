@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "BoardView.stackedPieces(_:base:inward:diameter:):BoardView.swift">
+      </ContextState>
+      <ContextState
+         contextName = "GameViewModel.pieceClickCB(piece:futurePieces:):GameVM.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in PieceView.body.getter:PieceView.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BoardViewModel.movePiece(futurePiece:):BoardVM.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BoardModel.movePiece(fromIndex:toIndex:color:):BoardModel.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in BoardViewModel.init(turn:dicevm:):BoardVM.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BoardModel.processExtraFlags(for:):BoardModel.swift">
+      </ContextState>
+      <ContextState
+         contextName = "GameView.pieceClickCB(piece:futurePieces:):GameView.swift">
+      </ContextState>
+      <ContextState
+         contextName = "movePiece(board:from:to:):Rules.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BoardViewModel.pieceClickCB(piece:):BoardVM.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BoardViewModel.handlePieceClick(piece:):BoardVM.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in BoardView.pointsLayer(size:diameter:):BoardView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "group.pieces.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
