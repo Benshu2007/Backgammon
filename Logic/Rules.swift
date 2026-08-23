@@ -5,17 +5,41 @@
 //  Created by איתי בן שושן on 31/07/2026.
 //
 
-func calculateValidMoves(board: BoardModel, turn: Bool, from: Int, moves: [Int]) -> [Int] {
+func calculateValidMoves(board: BoardModel, turn: Bool, from: Int, cubes: [Int]) -> [Int] {
+    if cubes.isEmpty {
+        return [];
+    }
     var valmoves: [Int] = [];
     
-    for move in moves {
-        if (turn) {
-            if (isValidMove(board: board, turn: turn, from: from, to: from - move)) {
-                valmoves.append(from - move);
-            }
-        } else {
-            if (isValidMove(board: board, turn: turn, from: from, to: from + move)) {
-                valmoves.append(from + move);
+    let firstTo = turn ? (from == 0 ? 25 : from) - cubes[0] : from + cubes[0]
+    if (cubes.count == 1) {
+        if isValidMove(board: board, turn: turn, from: from, to: firstTo) {
+            return [firstTo];
+        }
+        return [];
+    }
+    
+    let secondTo = turn ? (from == 0 ? 25 : from) - cubes[1] : from + cubes[1]
+    if (!isValidMove(board: board, turn: turn, from: from, to: firstTo) && !isValidMove(board: board, turn: turn, from: from, to: secondTo)) {
+        return [];
+    }
+    
+    let sumTo = turn ? (from == 0 ? 25 : from) - (cubes[0] + cubes[1]) : from + (cubes[0] + cubes[1])
+    if (cubes[0] != cubes[1]) {
+        if (isValidMove(board: board, turn: turn, from: from, to: firstTo)) {
+            valmoves.append(firstTo);
+        }
+        if (isValidMove(board: board, turn: turn, from: from, to: secondTo)) {
+            valmoves.append(secondTo);
+        }
+        if (valmoves.count == 2 && isValidMove(board: board, turn: turn, from: from, to: sumTo)) {
+            valmoves.append(sumTo);
+        }
+    } else {
+        for i in 0..<cubes.count {
+            let to = turn ? (from == 0 ? 25 : from) - cubes[0] * (i + 1) : from + cubes[0] * (i + 1)
+            if (isValidMove(board: board, turn: turn, from: from, to: to)) {
+                valmoves.append(to)
             }
         }
     }
@@ -23,16 +47,9 @@ func calculateValidMoves(board: BoardModel, turn: Bool, from: Int, moves: [Int])
     return valmoves;
 }
 
-func calculateMoves(roll: DiceRoll) -> [Int] {
-    if (roll.isDouble) {
-        return [roll.die1, roll.die1 * 2, roll.die1 * 3, roll.die1 * 4]
-    } else {
-        return [roll.die1, roll.die2, roll.die1 + roll.die2]
-    }
-}
-
 public func isValidClick(board: BoardModel, turn: Bool, from: Int) -> Bool {
-    return board.pieces[from].pieces[0].color == turn
+    if (!board.isBarEmpty(for: turn) && from != 0) { return false }
+    return (from != 0 && board.pieces[from].pieces[0].color == turn) || (from == 0 && !board.barPieces.isBarEmpty(for: turn))
 }
 
 func isGameOver(board: BoardModel, turn: Bool) -> Bool {

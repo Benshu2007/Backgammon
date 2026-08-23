@@ -9,5 +9,5 @@ struct DiceRoll : Equatable {
     let die1    : Int
     let die2    : Int
     
-    var isDouble : Bool { die1 == die2 }
+    var isDouble : Bool { return die1 == die2 }
 }

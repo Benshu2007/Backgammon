@@ -127,8 +127,8 @@ struct BoardView: View {
     @ViewBuilder
     private func barLayer(size: CGSize, diameter: CGFloat) -> some View {
         let barCenter = barCenterPoint(size: size)
-        let whiteBar = vm.board.barPieces.filter(\.color)
-        let blackBar = vm.board.barPieces.filter { !$0.color }
+        let whiteBar = vm.board.barPieces.white.pieces
+        let blackBar = vm.board.barPieces.black.pieces
          
         let whiteCount = CGFloat(max(1, whiteBar.count))
         let blackCount = CGFloat(max(1, blackBar.count))

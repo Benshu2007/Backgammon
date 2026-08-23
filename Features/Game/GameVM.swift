@@ -2,14 +2,14 @@ import SwiftUI
 
 @Observable
 final class GameViewModel {
-    var diceVM              : DiceViewModel = DiceViewModel();
+    var diceVM              : DiceViewModel     = DiceViewModel();
     var boardVM             : BoardViewModel!;
     
-    var turn                : Bool = true;
-    var canFinishTurn       : Bool = false
-    var availableMoves      : [Int] = []
-    var is_game_over        : Bool = false
-    var from_index          : Int = 0
+    var turn                : Bool              = true;
+    var canFinishTurn       : Bool              = false
+    var is_game_over        : Bool              = false
+    var from_index          : Int               = 0
+    var moves               : [Int]             = []
     
     init() {
         diceVM.setOnRollClick(fn: rollOnClick)
@@ -24,25 +24,10 @@ final class GameViewModel {
     }
     
     func pieceOnClick(group: PieceGroupModel) {
-        if group.pieces.contains(where: {$0.future == true}) {
+        if group.isFuture() {
             if movePiece(group: group) {
                 is_game_over = true
             }
-            if (!availableMoves.isEmpty) {
-                if (abs(group.index - from_index) == availableMoves.last) {
-                    availableMoves = []
-                } else {
-                    availableMoves.removeLast()
-                    if !availableMoves.isEmpty {
-                        let i = availableMoves.firstIndex(where: {$0 == abs(group.index - from_index)})
-                        availableMoves.remove(at: i!)
-                    }
-                }
-            }
-            if (availableMoves.isEmpty) {
-                canFinishTurn = true;
-            }
-            return
         } else if (isValidClick(board: boardVM.board, turn: turn, from: group.index)) {
             boardVM.removeFutures()
             handlePieceClick(group: group)
@@ -50,7 +35,7 @@ final class GameViewModel {
     }
 
     private func handlePieceClick(group: PieceGroupModel) {
-        let valmoves = calculateValidMoves(board: boardVM.board, turn: turn, from: group.index, moves: availableMoves)
+        let valmoves = calculateValidMoves(board: boardVM.board, turn: turn, from: group.index, cubes: moves)
         
         for valmove in valmoves {
             boardVM.board.pieces[valmove].pieces.append(PieceModel(color: turn, future: true, isExtra: false))
@@ -64,14 +49,23 @@ final class GameViewModel {
         let to = group.index;
         
         if (isValidMove(board: boardVM.board, turn: turn, from: from, to: to)) {
+            var die_used: Int = abs(to - from);
+            
+            if (from == 0) {
+                boardVM.board.removeBarLast(for: turn)
+                
+                die_used = min(to, 25 - to);
+            } else {
+                boardVM.board.pieces[from].pieces.removeLast();
+            }
             if (isEatingMove(board: boardVM.board, turn: turn, to: to)) {
-                boardVM.board.barPieces.append(boardVM.board.pieces[to].pieces[0]);
+                boardVM.board.addToBar(for: !turn, piece: boardVM.board.pieces[to].pieces[0]);
                 boardVM.board.pieces[to].pieces.removeAll(where: {$0.future == false});
             }
-            let future_piece_index = boardVM.board.pieces[to].pieces.firstIndex(where: {$0.future == true});
             
+            let future_piece_index = boardVM.board.pieces[to].pieces.firstIndex(where: {$0.future == true});
             boardVM.board.pieces[to].pieces[future_piece_index!].future = false;
-            boardVM.board.pieces[from].pieces.removeLast();
+            postMove(move: die_used);
         }
         
         if (isGameOver(board: boardVM.board, turn: turn)) {
@@ -83,13 +77,30 @@ final class GameViewModel {
         return false;
     }
     
+    private func postMove(move: Int) {
+        if (moves.contains(move)) {
+            moves.remove(at: moves.firstIndex(of: move)!)
+        } else if (diceVM.currentRoll!.isDouble == false) {
+            moves = [];
+        } else {
+            let q = move / moves[0];
+            for _ in 0..<q {
+                moves.removeLast();
+            }
+        }
+        
+        if (moves.isEmpty) {
+            canFinishTurn = true;
+        }
+    }
+    
     private func handleGameOver() {}
     
     private func rollOnClick() {
         Task {
-            var roll: DiceRoll;
-            await roll = diceVM.rollDice();
-            availableMoves = calculateMoves(roll: roll);
+            
+            let roll = await diceVM.rollDice();
+            moves = roll.isDouble ? Array(repeating: roll.die1, count: 4) : [roll.die1, roll.die2]
         }
     }
 }

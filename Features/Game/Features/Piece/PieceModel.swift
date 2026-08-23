@@ -10,4 +10,6 @@ struct PieceModel : Equatable, Identifiable {
 struct PieceGroupModel : Equatable {
     let index           : Int;
     var pieces          : [PieceModel]
+    
+    func isFuture() -> Bool { return pieces.contains(where: {$0.future == true}) }
 }
