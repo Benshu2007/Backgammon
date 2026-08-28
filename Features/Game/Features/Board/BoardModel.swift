@@ -4,7 +4,7 @@ public struct BoardModel {
     
     init() {
         self.barPieces = Bar()
-        barPieces.black.pieces.append(PieceModel(color: false, future: false, isExtra: false))
+//        barPieces.black.pieces.append(PieceModel(color: false, future: false, isExtra: false))
         
         self.pieces = (0..<25).map { PieceGroupModel(index: $0, pieces: []) }
         
@@ -39,6 +39,12 @@ public struct BoardModel {
             barPieces.white.pieces.append(piece)
         } else {
             barPieces.black.pieces.append(piece)
+        }
+    }
+    
+    mutating func removeFutures() {
+        pieces.forEach {
+            pieces[$0.index].pieces.removeAll(where: { $0.future })
         }
     }
 }

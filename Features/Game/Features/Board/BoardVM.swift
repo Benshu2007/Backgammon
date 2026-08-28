@@ -24,4 +24,8 @@ final class BoardViewModel {
     func boardOnClick() {
         removeFutures()
     }
+    
+    func loadBoard(from board: BoardModel) {
+        self.board = board
+    }
 }

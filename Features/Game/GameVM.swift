@@ -5,11 +5,14 @@ final class GameViewModel {
     var diceVM              : DiceViewModel     = DiceViewModel();
     var boardVM             : BoardViewModel!;
     
-    var turn                : Bool              = true;
+    var turn                : Bool              = true
     var canFinishTurn       : Bool              = false
+    var canBackMove         : Bool              = false
     var is_game_over        : Bool              = false
     var from_index          : Int               = 0
     var moves               : [Int]             = []
+    var last_boards         : [BoardModel]      = []
+    var last_moves_state    : [[Int]]             = []
     
     init() {
         diceVM.setOnRollClick(fn: rollOnClick)
@@ -19,8 +22,39 @@ final class GameViewModel {
     func onFinishTurn() {
         turn.toggle()
         canFinishTurn = false;
+        canBackMove = false;
         diceVM.enableRoll()
+        last_boards = [];
         return
+    }
+    
+    func onBackMove() {
+        moves = last_moves_state.last!;
+        var lastBoard = last_boards.last!;
+        lastBoard.removeFutures();
+        boardVM.loadBoard(from: lastBoard);
+        canFinishTurn = false;
+        
+        if (hasMoveInAction()) {
+            canBackMove = false;
+        }
+        
+        last_boards.removeLast();
+        last_moves_state.removeLast();
+    }
+    
+    func hasMoveInAction() -> Bool {
+        if (moves.count < 2 || moves.count == 3) {
+            return false;
+        }
+        if (moves[0] == moves[1] && moves.count == 4) {
+            return true;
+        }
+        if (moves[0] != moves[1] && moves.count == 2) {
+            return true;
+        }
+        
+        return false;
     }
     
     func pieceOnClick(group: PieceGroupModel) {
@@ -45,6 +79,8 @@ final class GameViewModel {
     }
     
     private func movePiece(group: PieceGroupModel) -> Bool {
+        last_boards.append(boardVM.board);
+        
         let from = from_index;
         let to = group.index;
         
@@ -78,6 +114,9 @@ final class GameViewModel {
     }
     
     private func postMove(move: Int) {
+        last_moves_state.append(moves)
+        
+        canBackMove = true;
         if (moves.contains(move)) {
             moves.remove(at: moves.firstIndex(of: move)!)
         } else if (diceVM.currentRoll!.isDouble == false) {
@@ -100,7 +139,7 @@ final class GameViewModel {
         Task {
             
             let roll = await diceVM.rollDice();
-            moves = roll.isDouble ? Array(repeating: roll.die1, count: 4) : [roll.die1, roll.die2]
+            moves = roll.isDouble ? Array(repeating: roll.die1, count: 4) : [roll.die1, roll.die2];
         }
     }
 }

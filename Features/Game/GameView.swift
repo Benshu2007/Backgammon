@@ -17,16 +17,29 @@ struct GameView: View {
                 VStack {
                     Text(verbatim: "Turn: \(vm.turn ? "White" : "Black")")
                     DiceView(vm: vm.diceVM)
-                    Button {
-                        vm.onFinishTurn()
-                    } label: {
-                        Image(systemName: "checkmark.square.fill")
-                            .foregroundStyle(.green)
-                            .font(.largeTitle)
-                            .bold()
+                    HStack {
+                        Button {
+                            vm.onFinishTurn()
+                        } label: {
+                            Image(systemName: "checkmark.square.fill")
+                                .foregroundStyle(.green)
+                                .font(.largeTitle)
+                                .bold()
+                        }
+                        .opacity(vm.canFinishTurn ? 1 : 0)
+                        .disabled(!vm.canFinishTurn)
+                        
+                        Button {
+                            vm.onBackMove()
+                        } label: {
+                            Image(systemName: "arrow.uturn.backward.square.fill")
+                                .foregroundStyle(.red)
+                                .font(.largeTitle)
+                                .bold()
+                        }
+                        .opacity(vm.canBackMove ? 1 : 0)
+                        .disabled(!vm.canBackMove)
                     }
-                    .opacity(vm.canFinishTurn ? 1 : 0)
-                    .disabled(!vm.canFinishTurn)
                 }
             }
         }
