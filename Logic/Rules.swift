@@ -32,7 +32,7 @@ func calculateValidMoves(board: BoardModel, turn: Bool, from: Int, cubes: [Int])
         if (isValidMove(board: board, turn: turn, from: from, to: secondTo)) {
             valmoves.append(secondTo);
         }
-        if (valmoves.count == 2 && isValidMove(board: board, turn: turn, from: from, to: sumTo)) {
+        if (valmoves.count > 0 && isValidMove(board: board, turn: turn, from: from, to: sumTo)) {
             valmoves.append(sumTo);
         }
     } else {
