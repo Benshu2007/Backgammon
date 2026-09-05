@@ -50,8 +50,8 @@ func isHouseFulled(board: BoardModel, color: Bool) -> Bool {
         
         return true;
     } else {
-        for i in 18..<25 {
-            if !board.pieces[i].pieces.isEmpty && board.pieces[i].pieces[0].color == color && board.pieces[i].pieces.count < 2 {
+        for i in 19..<25 {
+            if board.pieces[i].pieces.count(where: {$0.color == color}) < 2 {
                 return false
             }
         }
@@ -61,7 +61,6 @@ func isHouseFulled(board: BoardModel, color: Bool) -> Bool {
 }
 
 func isTurnBlocked(board: BoardModel, turn: Bool, cubes: [Int]) -> Bool {
-    //TODO:: fix
     var pieces : [PieceGroupModel];
     if (board.isBarEmpty(for: turn) == false) {
         if calculateValidMoves(board: board, turn: turn, from: 0, cubes: cubes).isEmpty {
