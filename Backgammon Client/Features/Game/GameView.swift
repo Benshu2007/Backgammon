@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct GameView: View {
-    @State private var vm = GameViewModel()
+    @State private var vm       : GameViewModel = GameViewModel()
+    @State private var error    : Error?        = nil
     
     var body: some View {
         ZStack {
@@ -42,6 +43,14 @@ struct GameView: View {
                     }
                 }
             }
+        }
+    }
+    
+    func onError() -> any View {
+        // TODO::
+        // handle errors like block turn or eating move.
+        alert(item: $vm.event) { event in
+            Alert(title: Text(event.title), message: Text(event.message), dismissButton: .default(Text("OK")))
         }
     }
 }

@@ -12,7 +12,9 @@ final class GameViewModel {
     var from_index          : Int               = 0
     var moves               : [Int]             = []
     var last_boards         : [BoardModel]      = []
-    var last_moves_state    : [[Int]]             = []
+    var last_moves_state    : [[Int]]           = []
+
+    var event               : GameViewEvent?    = nil
     
     init() {
         diceVM.setOnRollClick(fn: rollOnClick)
@@ -58,18 +60,26 @@ final class GameViewModel {
     }
     
     func pieceOnClick(group: PieceGroupModel) {
-        if group.isFuture() {
-            if movePiece(group: group) {
-                is_game_over = true
+        do {
+            if group.isFuture() {
+                if try movePiece(group: group) {
+                    is_game_over = true
+                }
+            } else if (try isValidClick(board: boardVM.board, turn: turn, from: group.index)) {
+                boardVM.removeFutures()
+                try handlePieceClick(group: group)
             }
-        } else if (isValidClick(board: boardVM.board, turn: turn, from: group.index)) {
-            boardVM.removeFutures()
-            handlePieceClick(group: group)
+        } catch InGameExceptions.turnBlocked {
+            event = .turnBlocked
+        } catch InGameExceptions.eatingMove {
+            event = .eatingMove
+        } catch {
+            event = .unknownError
         }
     }
 
-    private func handlePieceClick(group: PieceGroupModel) {
-        let valmoves = calculateValidMoves(board: boardVM.board, turn: turn, from: group.index, cubes: moves)
+    private func handlePieceClick(group: PieceGroupModel) throws {
+        let valmoves = try calculateValidMoves(board: boardVM.board, turn: turn, from: group.index, cubes: moves)
         
         for valmove in valmoves {
             boardVM.board.pieces[valmove].pieces.append(PieceModel(color: turn, future: true, isExtra: false))
@@ -78,13 +88,13 @@ final class GameViewModel {
         from_index = group.index;
     }
     
-    private func movePiece(group: PieceGroupModel) -> Bool {
+    private func movePiece(group: PieceGroupModel) throws -> Bool {
         last_boards.append(boardVM.board);
         
         let from = from_index;
         let to = group.index;
         
-        if (isValidMove(board: boardVM.board, turn: turn, from: from, to: to)) {
+        if (try isValidMove(board: boardVM.board, turn: turn, from: from, to: to)) {
             var die_used: Int = abs(to - from);
             
             if (from == 0) {
@@ -140,6 +150,43 @@ final class GameViewModel {
             
             let roll = await diceVM.rollDice();
             moves = roll.isDouble ? Array(repeating: roll.die1, count: 4) : [roll.die1, roll.die2];
+            
+            if (moves.isEmpty) {
+                event = .turnBlocked
+            }
+        }
+    }
+}
+
+enum GameViewEvent: Identifiable {
+    case turnBlocked
+    case eatingMove
+    case unknownError
+
+    var id: String {
+        switch self {
+        case .turnBlocked: "turnBlocked"
+        case .eatingMove: "eatingMove"
+        case .unknownError: "unknownError"
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .turnBlocked: "Turn blocked"
+        case .eatingMove: "Eating move required"
+        case .unknownError: "Move failed"
+        }
+    }
+
+    var message: String {
+        switch self {
+        case .turnBlocked:
+            "You do not have a valid move for this roll."
+        case .eatingMove:
+            "You must make the eating move first."
+        case .unknownError:
+            "Something went wrong."
         }
     }
 }
