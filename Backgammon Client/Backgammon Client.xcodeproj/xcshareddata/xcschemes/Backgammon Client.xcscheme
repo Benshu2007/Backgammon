@@ -15,7 +15,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F9508C013017B6EF002E6C6E"
+               BlueprintIdentifier = "F97886FF304B257B00F1530A"
                BuildableName = "Backgammon.app"
                BlueprintName = "Backgammon"
                ReferencedContainer = "container:Backgammon Client.xcodeproj">
@@ -45,7 +45,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F9508C013017B6EF002E6C6E"
+            BlueprintIdentifier = "F97886FF304B257B00F1530A"
             BuildableName = "Backgammon.app"
             BlueprintName = "Backgammon"
             ReferencedContainer = "container:Backgammon Client.xcodeproj">
@@ -62,7 +62,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F9508C013017B6EF002E6C6E"
+            BlueprintIdentifier = "F97886FF304B257B00F1530A"
             BuildableName = "Backgammon.app"
             BlueprintName = "Backgammon"
             ReferencedContainer = "container:Backgammon Client.xcodeproj">
