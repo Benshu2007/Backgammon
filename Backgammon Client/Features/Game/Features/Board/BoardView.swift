@@ -11,17 +11,27 @@ struct BoardView: View {
     private let frameThickness: CGFloat = 14
     private let barWidthRatio: CGFloat = 0.07
     private let pieceBoardRatio: CGFloat = 0.60
+    private let borneOffWidthRatio: CGFloat = 0.11
     
     var body: some View {
         GeometryReader { geo in
-            ZStack {
-                Canvas { context, size in
-                    draw(in: &context, size: size)
+            let railWidth = borneOffRailWidth(for: geo.size)
+            let boardSize = CGSize(width: max(0, geo.size.width - railWidth), height: geo.size.height)
+            
+            HStack(spacing: 0) {
+                ZStack {
+                    Canvas { context, size in
+                        draw(in: &context, size: size)
+                    }
+                    piecesOverlay(size: boardSize)
                 }
-                piecesOverlay(size: geo.size)
-            }
-            .onTapGesture {
-                vm.boardOnClick()
+                .frame(width: boardSize.width, height: boardSize.height)
+                .onTapGesture {
+                    vm.boardOnClick()
+                }
+                
+                borneOffRail(size: CGSize(width: railWidth, height: boardSize.height))
+                    .frame(width: railWidth, height: geo.size.height)
             }
         }
     }
@@ -142,6 +152,68 @@ struct BoardView: View {
             .position(x: barCenter.x, y: barCenter.topy + diameter)
     }
     
+    private func borneOffRail(size: CGSize) -> some View {
+        ZStack {
+            Rectangle()
+                .fill(frameColor)
+            
+            VStack(spacing: 0) {
+                borneOffSection(
+                    pieces: vm.board.borneOffPieces.black.pieces,
+                    color: false,
+                    stacksFromBottom: false,
+                    size: CGSize(width: size.width, height: (size.height - 5) / 2)
+                )
+                
+                Rectangle()
+                    .fill(Color.black.opacity(0.25))
+                    .frame(height: 2)
+                
+                borneOffSection(
+                    pieces: vm.board.borneOffPieces.white.pieces,
+                    color: true,
+                    stacksFromBottom: true,
+                    size: CGSize(width: size.width, height: (size.height - 5) / 2)
+                )
+            }
+            .padding(6)
+        }
+    }
+    
+    private func borneOffSection(
+        pieces: [PieceModel],
+        color: Bool,
+        stacksFromBottom: Bool,
+        size: CGSize
+    ) -> some View {
+        let pieceWidth = max(12, size.width * 0.58)
+        let pieceHeight = (size.height - 3 * 17) / 15
+        let placeholders = Array(repeating: PieceModel(color: color, future: false, isExtra: false), count: 15)
+        let displayedPieces = pieces.isEmpty ? placeholders : pieces
+        
+        return VStack(spacing: 3) {
+            if stacksFromBottom {
+                Spacer(minLength: 0)
+            }
+            
+            ForEach(Array(displayedPieces.enumerated()), id: \.offset) { _, piece in
+                RoundedRectangle(cornerRadius: 3, style: .continuous)
+                    .fill(piece.color ? Color.white.opacity(pieces.isEmpty ? 0.16 : 0.92) : Color.black.opacity(pieces.isEmpty ? 0.16 : 0.72))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 3, style: .continuous)
+                            .stroke(Color.white.opacity(piece.color ? 0.35 : 0.12), lineWidth: 1)
+                    }
+                    .frame(width: pieceWidth, height: pieceHeight)
+            }
+            
+            if !stacksFromBottom {
+                Spacer(minLength: 0)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(barInlayColor.opacity(0.75), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+    }
+    
     private func pointBasePosition(for index: Int, size: CGSize) -> (base: CGPoint, inward: CGVector) {
         let fullRect = CGRect(origin: .zero, size: size)
         let feltRect = fullRect.insetBy(dx: frameThickness, dy: frameThickness)
@@ -198,6 +270,10 @@ struct BoardView: View {
         let barWidth = feltRect.width * barWidthRatio
         let halfWidth = (feltRect.width - barWidth) / 2
         return (halfWidth / 6) * pieceBoardRatio
+    }
+    
+    private func borneOffRailWidth(for size: CGSize) -> CGFloat {
+        max(46, size.width * borneOffWidthRatio)
     }
     
     private func handleGameOver() {

@@ -5,10 +5,45 @@
 //  Created by איתי בן שושן on 31/07/2026.
 //
 
+func lastIndexInHouse(board: BoardModel, color: Bool) -> Int {
+    if (color) {
+        for i in (1...6).reversed() {
+            if !board.pieces[i].pieces.isEmpty {
+                return i;
+            }
+        }
+    }
+    
+    return 0;
+}
+
+func isReadyForBearing(board: BoardModel, color: Bool) -> Bool {
+    if (!board.isBarEmpty(for: color)) {
+        return false;
+    }
+    if color {
+        for i in 7..<25 {
+            if board.pieces[i].pieces.count(where: {$0.color == color}) > 0 {
+                return false
+            }
+        }
+        return true;
+    }
+    
+    
+    for i in 1..<18 {
+        if  board.pieces[i].pieces.count(where: {$0.color == color}) > 0 {
+            return false
+        }
+    }
+    
+    return true;
+}
+
 func isHouseFulled(board: BoardModel, color: Bool) -> Bool {
     if color {
         for i in 1..<7 {
-            if !board.pieces[i].pieces.isEmpty && board.pieces[i].pieces[0].color == color && board.pieces[i].pieces.count < 2 {
+            if board.pieces[i].pieces.count(where: {$0.color == color}) < 2 {
                 return false
             }
         }
@@ -102,6 +137,6 @@ func isEatingMove(board: BoardModel, turn: Bool, to: Int) -> Bool {
 }
 
 func isValidMove(board: BoardModel, turn: Bool, from: Int, to: Int) -> Bool {
-    return (to <= 24 && to >= 1 && isValidClick(board: board, turn: turn, from: from) &&
+    return (isReadyForBearing(board: board, color: turn) && to < 1) || (to <= 24 && to >= 1 && isValidClick(board: board, turn: turn, from: from) &&
             (board.pieces[to].pieces.count(where: {$0.future == false}) <= 1 || board.pieces[to].pieces[0].color == turn))
 }

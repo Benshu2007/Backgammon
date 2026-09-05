@@ -2,19 +2,19 @@ import SwiftUI
 
 @Observable
 final class GameViewModel {
-    var diceVM              : DiceViewModel     = DiceViewModel();
-    var boardVM             : BoardViewModel!;
+    var diceVM                  : DiceViewModel     = DiceViewModel();
+    var boardVM                 : BoardViewModel!;
     
-    var turn                : Bool              = true
-    var canFinishTurn       : Bool              = false
-    var canBackMove         : Bool              = false
-    var is_game_over        : Bool              = false
-    var from_index          : Int               = 0
-    var moves               : [Int]             = []
-    var last_boards         : [BoardModel]      = []
-    var last_moves_state    : [[Int]]           = []
+    var turn                    : Bool              = true
+    var canFinishTurn           : Bool              = false
+    var canBackMove             : Bool              = false
+    var is_game_over        	: Bool              = false
+    var from_index              : Int               = 0
+    var moves                   : [Int]             = []
+    var last_boards             : [BoardModel]      = []
+    var last_moves_state        : [[Int]]           = []
     
-    var event               : GameViewEvent?    = nil
+    var event                   : GameViewEvent?    = nil
     
     init() {
         diceVM.setOnRollClick(fn: rollOnClick)
@@ -77,6 +77,33 @@ final class GameViewModel {
     }
     
     private func handlePieceClick(group: PieceGroupModel) {
+        if (isReadyForBearing(board: boardVM.board, color: turn)) {
+            bearPiece(group: group)
+        } else {
+            let valmoves = calculateValidMoves(board: boardVM.board, turn: turn, from: group.index, cubes: moves)
+            
+            for valmove in valmoves {
+                boardVM.board.pieces[valmove].pieces.append(PieceModel(color: turn, future: true, isExtra: false))
+            }
+            
+            from_index = group.index;
+        }
+    }
+    
+    private func bearPiece(group: PieceGroupModel) {
+        if (group.index == lastIndexInHouse(board: boardVM.board, color: turn)) {
+            if (moves[0] >= group.index) {
+                let piece = boardVM.board.pieces[group.index].pieces.removeLast();
+                boardVM.board.addToBorneOff(for: turn, piece: piece);
+                postMove(move: moves[0])
+                return;
+            } else if (moves.count > 1 && moves[1] >= group.index) {
+                let piece = boardVM.board.pieces[group.index].pieces.removeLast();
+                boardVM.board.addToBorneOff(for: turn, piece: piece);
+                postMove(move: moves[1])
+                return;
+            }
+        }
         let valmoves = calculateValidMoves(board: boardVM.board, turn: turn, from: group.index, cubes: moves)
         
         for valmove in valmoves {
@@ -84,6 +111,7 @@ final class GameViewModel {
         }
         
         from_index = group.index;
+        
     }
     
     private func movePiece(group: PieceGroupModel) -> Bool {
