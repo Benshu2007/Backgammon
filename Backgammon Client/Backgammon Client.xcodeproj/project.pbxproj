@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		F9508C023017B6EF002E6C6E /* Backgammon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backgammon.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9788700304B257B00F1530A /* Backgammon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Backgammon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -16,14 +16,19 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
-		F9508C043017B6EF002E6C6E /* Backgammon */ = {
+		F9492B0430432F3C00110BDF /* Exceptions */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Backgammon;
+			path = Exceptions;
 			sourceTree = "<group>";
 		};
 		F9508C123017B6FE002E6C6E /* Features */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Features;
+			sourceTree = "<group>";
+		};
+		F9788701304B257B00F1530A /* Backgammon */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Backgammon;
 			sourceTree = "<group>";
 		};
 		F97F9EC4301CF37F00CB5C48 /* Logic */ = {
@@ -34,7 +39,7 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		F9508BFF3017B6EF002E6C6E /* Frameworks */ = {
+		F97886FD304B257B00F1530A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -47,10 +52,11 @@
 		F9508BF93017B6EF002E6C6E = {
 			isa = PBXGroup;
 			children = (
+				F9492B0430432F3C00110BDF /* Exceptions */,
 				F907658C303B095700511858 /* Assets */,
 				F97F9EC4301CF37F00CB5C48 /* Logic */,
 				F9508C123017B6FE002E6C6E /* Features */,
-				F9508C043017B6EF002E6C6E /* Backgammon */,
+				F9788701304B257B00F1530A /* Backgammon */,
 				F9508C033017B6EF002E6C6E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -58,7 +64,7 @@
 		F9508C033017B6EF002E6C6E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F9508C023017B6EF002E6C6E /* Backgammon.app */,
+				F9788700304B257B00F1530A /* Backgammon.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -66,13 +72,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F9508C013017B6EF002E6C6E /* Backgammon */ = {
+		F97886FF304B257B00F1530A /* Backgammon */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F9508C0F3017B6F0002E6C6E /* Build configuration list for PBXNativeTarget "Backgammon" */;
+			buildConfigurationList = F9788708304B257C00F1530A /* Build configuration list for PBXNativeTarget "Backgammon" */;
 			buildPhases = (
-				F9508BFE3017B6EF002E6C6E /* Sources */,
-				F9508BFF3017B6EF002E6C6E /* Frameworks */,
-				F9508C003017B6EF002E6C6E /* Resources */,
+				F97886FC304B257B00F1530A /* Sources */,
+				F97886FD304B257B00F1530A /* Frameworks */,
+				F97886FE304B257B00F1530A /* Resources */,
 			);
 			buildRules = (
 			);
@@ -80,15 +86,16 @@
 			);
 			fileSystemSynchronizedGroups = (
 				F907658C303B095700511858 /* Assets */,
-				F9508C043017B6EF002E6C6E /* Backgammon */,
+				F9492B0430432F3C00110BDF /* Exceptions */,
 				F9508C123017B6FE002E6C6E /* Features */,
+				F9788701304B257B00F1530A /* Backgammon */,
 				F97F9EC4301CF37F00CB5C48 /* Logic */,
 			);
 			name = Backgammon;
 			packageProductDependencies = (
 			);
 			productName = Backgammon;
-			productReference = F9508C023017B6EF002E6C6E /* Backgammon.app */;
+			productReference = F9788700304B257B00F1530A /* Backgammon.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -98,15 +105,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2630;
+				LastSwiftUpdateCheck = 2660;
 				LastUpgradeCheck = 2660;
 				TargetAttributes = {
-					F9508C013017B6EF002E6C6E = {
-						CreatedOnToolsVersion = 26.3;
+					F97886FF304B257B00F1530A = {
+						CreatedOnToolsVersion = 26.6;
 					};
 				};
 			};
-			buildConfigurationList = F9508BFD3017B6EF002E6C6E /* Build configuration list for PBXProject "Backgammon" */;
+			buildConfigurationList = F9508BFD3017B6EF002E6C6E /* Build configuration list for PBXProject "Backgammon Client" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -120,13 +127,13 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F9508C013017B6EF002E6C6E /* Backgammon */,
+				F97886FF304B257B00F1530A /* Backgammon */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		F9508C003017B6EF002E6C6E /* Resources */ = {
+		F97886FE304B257B00F1530A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -136,7 +143,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		F9508BFE3017B6EF002E6C6E /* Sources */ = {
+		F97886FC304B257B00F1530A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -270,21 +277,22 @@
 			};
 			name = Release;
 		};
-		F9508C103017B6F0002E6C6E /* Debug */ = {
+		F9788709304B257C00F1530A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GW9KRBQ2LA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -292,7 +300,6 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Benshu.Backgammon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -303,21 +310,22 @@
 			};
 			name = Debug;
 		};
-		F9508C113017B6F0002E6C6E /* Release */ = {
+		F978870A304B257C00F1530A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GW9KRBQ2LA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -325,7 +333,6 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Benshu.Backgammon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -339,7 +346,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F9508BFD3017B6EF002E6C6E /* Build configuration list for PBXProject "Backgammon" */ = {
+		F9508BFD3017B6EF002E6C6E /* Build configuration list for PBXProject "Backgammon Client" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F9508C0D3017B6F0002E6C6E /* Debug */,
@@ -348,11 +355,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F9508C0F3017B6F0002E6C6E /* Build configuration list for PBXNativeTarget "Backgammon" */ = {
+		F9788708304B257C00F1530A /* Build configuration list for PBXNativeTarget "Backgammon" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F9508C103017B6F0002E6C6E /* Debug */,
-				F9508C113017B6F0002E6C6E /* Release */,
+				F9788709304B257C00F1530A /* Debug */,
+				F978870A304B257C00F1530A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
