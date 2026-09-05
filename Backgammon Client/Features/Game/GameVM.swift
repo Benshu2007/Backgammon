@@ -91,7 +91,8 @@ final class GameViewModel {
     }
     
     private func bearPiece(group: PieceGroupModel) {
-        if (group.index == lastIndexInHouse(board: boardVM.board, color: turn)) {
+        last_boards.append(boardVM.board);
+        if (group.index == lastIndexInHouse(board: boardVM.board, color: turn) || group.index == moves[0] || group.index == moves[1]) {
             if (moves[0] >= group.index) {
                 let piece = boardVM.board.pieces[group.index].pieces.removeLast();
                 boardVM.board.addToBorneOff(for: turn, piece: piece);
