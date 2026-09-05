@@ -48,10 +48,10 @@ final class DiceViewModel: ObservableObject {
 
         let finalDie1 = randomProvider.rollDie()
         let finalDie2 = randomProvider.rollDie()
-        die1Value = finalDie1
-        die2Value = finalDie2
+        die1Value = 6
+        die2Value = 4
 
-        let roll = DiceRoll(die1: finalDie1, die2: finalDie2)
+        let roll = DiceRoll(die1: 6, die2: 4)
         currentRoll = roll
         isRolling = false
         

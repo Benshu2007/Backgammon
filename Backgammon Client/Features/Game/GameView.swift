@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct GameView: View {
-    @State private var vm       : GameViewModel = GameViewModel()
-    @State private var error    : Error?        = nil
-    
+    @State private var vm: GameViewModel = GameViewModel()
+        
     var body: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             HStack {
                 BoardView(vm: vm.boardVM)
                 VStack {
@@ -43,15 +42,87 @@ struct GameView: View {
                     }
                 }
             }
+            
+            if let event = vm.event {
+                GameNotificationView(event: event) {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.86)) {
+                        vm.event = nil
+                    }
+                }
+                .padding(.top, 18)
+                .padding(.horizontal, 24)
+                .transition(.move(edge: .top).combined(with: .opacity))
+                .zIndex(1)
+            }
+        }
+        .animation(.spring(response: 0.35, dampingFraction: 0.86), value: vm.event?.id)
+        .task(id: vm.event?.id) {
+            guard vm.event != nil else { return }
+            try? await Task.sleep(nanoseconds: 2_800_000_000)
+            guard !Task.isCancelled else { return }
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.86)) {
+                vm.event = nil
+            }
+        }
+    }
+}
+
+private struct GameNotificationView: View {
+    let event: GameViewEvent
+    let onDismiss: () -> Void
+    
+    private var systemImage: String {
+        switch event {
+        case .turnBlocked: "hand.raised.fill"
+        case .unknownError: "exclamationmark.triangle.fill"
         }
     }
     
-    func onError() -> any View {
-        // TODO::
-        // handle errors like block turn or eating move.
-        alert(item: $vm.event) { event in
-            Alert(title: Text(event.title), message: Text(event.message), dismissButton: .default(Text("OK")))
+    private var tint: Color {
+        switch event {
+        case .turnBlocked: .orange
+        case .unknownError: .red
         }
+    }
+    
+    var body: some View {
+        HStack(spacing: 14) {
+            Image(systemName: systemImage)
+                .font(.title3.weight(.semibold))
+                .foregroundStyle(tint)
+                .frame(width: 34, height: 34)
+                .background(tint.opacity(0.15), in: Circle())
+            
+            VStack(alignment: .leading, spacing: 3) {
+                Text(event.title)
+                    .font(.headline.weight(.semibold))
+                    .foregroundStyle(.primary)
+                Text(event.message)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            
+            Button(action: onDismiss) {
+                Image(systemName: "xmark")
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(.secondary)
+                    .frame(width: 28, height: 28)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.leading, 14)
+        .padding(.trailing, 10)
+        .padding(.vertical, 12)
+        .frame(maxWidth: 420, alignment: .leading)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .stroke(.white.opacity(0.38), lineWidth: 1)
+        }
+        .shadow(color: .black.opacity(0.18), radius: 18, y: 10)
     }
 }
 
