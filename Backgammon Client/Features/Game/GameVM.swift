@@ -8,7 +8,6 @@ final class GameViewModel {
     var turn                    : Bool              = true
     var canFinishTurn           : Bool              = false
     var canBackMove             : Bool              = false
-    var is_game_over        	: Bool              = false
     var from_index              : Int               = 0
     var moves                   : [Int]             = []
     var last_boards             : [BoardModel]      = []
@@ -68,7 +67,7 @@ final class GameViewModel {
     func pieceOnClick(group: PieceGroupModel) {
         if group.isFuture() {
             if movePiece(group: group) {
-                is_game_over = true
+                handleGameOver();
             }
         } else if (isValidClick(board: boardVM.board, turn: turn, from: group.index)) {
             boardVM.removeFutures()
@@ -77,6 +76,7 @@ final class GameViewModel {
     }
     
     private func handlePieceClick(group: PieceGroupModel) {
+        //TODO:: CHeck for bearing the 1st piece if there is also a 2nd piece
         if (isReadyForBearing(board: boardVM.board, color: turn)) {
             bearPiece(group: group)
         } else {
@@ -92,7 +92,7 @@ final class GameViewModel {
     
     private func bearPiece(group: PieceGroupModel) {
         last_boards.append(boardVM.board);
-        if (group.index == lastIndexInHouse(board: boardVM.board, color: turn) || group.index == moves[0] || group.index == moves[1]) {
+        if (group.index == lastIndexInHouse(board: boardVM.board, color: turn) || moves.contains(group.index)) {
             if (moves[0] >= group.index) {
                 let piece = boardVM.board.pieces[group.index].pieces.removeLast();
                 boardVM.board.addToBorneOff(for: turn, piece: piece);
@@ -106,12 +106,19 @@ final class GameViewModel {
             }
         }
         let valmoves = calculateValidMoves(board: boardVM.board, turn: turn, from: group.index, cubes: moves)
+        if valmoves.isEmpty {
+            event = .unknownError
+        }
         
         for valmove in valmoves {
             boardVM.board.pieces[valmove].pieces.append(PieceModel(color: turn, future: true, isExtra: false))
         }
         
         from_index = group.index;
+        
+        if (isGameOver(board: boardVM.board, turn: turn)) {
+            handleGameOver();
+        }
         
     }
     
@@ -170,7 +177,9 @@ final class GameViewModel {
         }
     }
     
-    private func handleGameOver() {}
+    private func handleGameOver() {
+        event = .unknownError
+    }
     
     private func rollOnClick() {
         
