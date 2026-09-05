@@ -27,6 +27,12 @@ final class GameViewModel {
         canBackMove = false;
         diceVM.enableRoll()
         last_boards = [];
+        
+        if !boardVM.board.isBarEmpty(for: turn) && isHouseFulled(board: boardVM.board, color: !turn) {
+            event = .turnBlocked;
+            onFinishTurn();
+        }
+        
         return
     }
     

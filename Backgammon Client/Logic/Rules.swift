@@ -5,6 +5,26 @@
 //  Created by איתי בן שושן on 31/07/2026.
 //
 
+func isHouseFulled(board: BoardModel, color: Bool) -> Bool {
+    if color {
+        for i in 1..<7 {
+            if !board.pieces[i].pieces.isEmpty && board.pieces[i].pieces[0].color == color && board.pieces[i].pieces.count < 2 {
+                return false
+            }
+        }
+        
+        return true;
+    } else {
+        for i in 18..<25 {
+            if !board.pieces[i].pieces.isEmpty && board.pieces[i].pieces[0].color == color && board.pieces[i].pieces.count < 2 {
+                return false
+            }
+        }
+        
+        return true;
+    }
+}
+
 func isTurnBlocked(board: BoardModel, turn: Bool, cubes: [Int]) -> Bool {
     var pieces : [PieceGroupModel];
     if (board.isBarEmpty(for: turn) == false) {

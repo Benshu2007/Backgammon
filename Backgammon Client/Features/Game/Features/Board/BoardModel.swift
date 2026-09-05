@@ -8,7 +8,7 @@ public struct BoardModel {
         
         self.pieces = (0..<25).map { PieceGroupModel(index: $0, pieces: []) }
         
-        for index in 1...6 {
+        for index in 1...7 {
             self.pieces[index] = PieceGroupModel(index: index, pieces: Array(repeating: PieceModel(color: true, future: false, isExtra: false), count: 2))
         }
     }
